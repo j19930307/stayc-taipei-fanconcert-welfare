@@ -11,3 +11,7 @@
 
 ### 使用方式
 開啟 `index.html` 即可離線或透過 GitHub Pages 直接查詢。
+
+### 📢 官方福利獎項公告
+- [Facebook 官方公告貼文](https://www.facebook.com/photo.php?fbid=1503256168502357)
+- [Instagram 官方公告貼文](https://www.instagram.com/p/DdGn2BoT5bR/)
