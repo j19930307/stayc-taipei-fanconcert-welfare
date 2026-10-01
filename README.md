@@ -12,6 +12,7 @@
 ### 使用方式
 開啟 `index.html` 即可離線或透過 GitHub Pages 直接查詢。
 
-### 📢 官方福利獎項公告
-- [Facebook 官方公告貼文](https://www.facebook.com/photo.php?fbid=1503256168502357)
-- [Instagram 官方公告貼文](https://www.instagram.com/p/DdGn2BoT5bR/)
+### 📢 官方公告連結
+- [Facebook 福利抽選結果公告（原貼文 69 張圖）](https://www.facebook.com/farglorycreative/posts/pfbid03U9VjeFy7GhQJB3jD3c3SuM56mhrARn4i7oU1t3MhASUCrAuUfDeYifZRjmrQVm4l)
+- [Facebook 官方福利獎項說明公告](https://www.facebook.com/photo.php?fbid=1503256168502357)
+- [Instagram 官方福利獎項說明公告](https://www.instagram.com/p/DdGn2BoT5bR/)
