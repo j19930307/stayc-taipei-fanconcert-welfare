@@ -2,25 +2,27 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#4a69bd">
 <title>STAYC 台北場福利中獎序號快速查詢系統</title>
 <style>
   :root {
     --primary: #4a69bd;
     --primary-dark: #1e3799;
     --accent: #e55039;
-    --bg: #f8f9fa;
     --card: #ffffff;
     --text: #2f3542;
     --border: #e0e0e0;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif; background: #eef2f7; color: var(--text); padding: 24px; }
+  :focus-visible { outline: 3px solid #82a1ff; outline-offset: 2px; }
   .container { max-width: 1200px; margin: 0 auto; }
   .header { text-align: center; margin-bottom: 24px; }
   .header h1 { font-size: 28px; color: var(--primary-dark); margin-bottom: 8px; }
   .header p { color: #57606f; font-size: 14px; }
-  
+
   .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
   .stat-card { background: var(--card); padding: 14px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; border-left: 4px solid var(--primary); }
   .stat-val { font-size: 20px; font-weight: bold; color: var(--primary-dark); }
@@ -30,7 +32,7 @@
   .search-row { display: flex; gap: 12px; flex-wrap: wrap; }
   .search-input { flex: 2; min-width: 250px; padding: 12px 16px; font-size: 16px; border: 2px solid var(--border); border-radius: 8px; outline: none; transition: 0.2s; }
   .search-input:focus { border-color: var(--primary); }
-  .filter-select { flex: 1; min-width: 150px; padding: 12px; font-size: 14px; border: 2px solid var(--border); border-radius: 8px; background: white; }
+  .filter-select { flex: 1; min-width: 150px; padding: 12px; font-size: 16px; border: 2px solid var(--border); border-radius: 8px; background: white; }
   .result-count { margin-top: 10px; font-size: 13px; color: #57606f; }
 
   .table-card { background: var(--card); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); overflow: hidden; }
@@ -38,10 +40,12 @@
   table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
   th { background: var(--primary); color: white; padding: 12px 14px; position: sticky; top: 0; z-index: 10; white-space: nowrap; }
   td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-  tr:nth-child(even) { background: #fafbfc; }
-  tr:hover { background: #edf2f7; }
+  @media (min-width: 701px) {
+    tr:nth-child(even) { background: #fafbfc; }
+    tr:hover { background: #edf2f7; }
+  }
   .serial-badge { font-family: Consolas, monospace; font-size: 15px; font-weight: bold; color: #0c2461; background: #e8f0fe; padding: 3px 8px; border-radius: 4px; display: inline-block; }
-  .tag { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+  .tag { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; white-space: nowrap; }
   .tag-7800 { background: #ffeaa7; color: #d63031; }
   .tag-5800 { background: #dfe6e9; color: #2d3436; }
   .tag-4800 { background: #e8f5e9; color: #2e7d32; }
@@ -49,6 +53,53 @@
   .tag-2800 { background: #f3e5f5; color: #7b1fa2; }
   .page-badge { background: #fffa65; color: #2f3542; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
   .empty-state { text-align: center; padding: 40px; color: #a4b0be; }
+  .more-wrap { padding: 12px; }
+  .more-btn { display: block; width: 100%; min-height: 48px; font-size: 16px; font-weight: 600; color: var(--primary-dark); background: #fff; border: 2px solid var(--primary); border-radius: 10px; cursor: pointer; }
+
+  /* ===== 手機版 ===== */
+  @media (max-width: 700px) {
+    body { padding: 12px max(12px, env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); }
+    .header { margin-bottom: 14px; }
+    .header h1 { font-size: 20px; line-height: 1.3; }
+    .header p { font-size: 13px; line-height: 1.5; }
+
+    .stats-bar { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .stat-card { padding: 10px 8px; }
+    .stat-card:first-child { grid-column: 1 / -1; }
+    .stat-val { font-size: 18px; }
+    .stat-label { font-size: 11px; }
+
+    /* 搜尋列固定在上方，捲動結果時仍可改序號 */
+    .search-box { position: sticky; top: 0; z-index: 30; margin: 0 -12px 12px; padding: 10px 12px; border-radius: 0 0 12px 12px; }
+    .search-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .search-input { grid-column: 1 / -1; min-width: 0; height: 48px; padding: 0 14px; font-size: 18px; letter-spacing: 0.04em; }
+    .search-input::placeholder { font-size: 15px; letter-spacing: 0; }
+    .filter-select { min-width: 0; height: 44px; padding: 0 8px; }
+    .result-count { margin-top: 6px; }
+
+    /* 表格 → 卡片 */
+    .table-card { background: transparent; box-shadow: none; overflow: visible; border-radius: 0; }
+    .table-wrapper { max-height: none; overflow: visible; }
+    table, tbody { display: block; }
+    thead { display: none; }
+    tbody tr { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: 10px; background: var(--card); border: 1px solid var(--border); border-left: 5px solid var(--primary); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    tbody tr.tier-7800 { border-left-color: #f1c40f; }
+    tbody tr.tier-5800 { border-left-color: #3498db; }
+    tbody tr.tier-4800 { border-left-color: #2ecc71; }
+    tbody tr.tier-3800, tbody tr.tier-2800 { border-left-color: #9b59b6; }
+    tbody tr.empty { display: block; background: none; border: 0; box-shadow: none; }
+    td { padding: 0; border: 0; }
+    .empty-state { padding: 32px 12px; font-size: 15px; line-height: 1.6; }
+    .serial-badge { font-size: 20px; padding: 4px 10px; letter-spacing: 0.05em; }
+    .tag { font-size: 13px; padding: 4px 10px; }
+    td.c-benefit { grid-column: 1 / -1; font-size: 17px; padding: 8px 0 8px; }
+    td.c-en { display: none; }
+    td.c-img, td.c-pos, td.c-page { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; border-top: 1px dashed var(--border); text-align: right; }
+    td.c-img { border-top: 1px solid var(--border); }
+    td.c-img strong { font-size: 17px; }
+    td.c-img::before, td.c-pos::before, td.c-page::before { content: attr(data-label); flex: none; font-size: 13px; color: #747d8c; text-align: left; }
+    .more-wrap { padding: 0; }
+  }
 </style>
 </head>
 <body>
@@ -68,8 +119,8 @@
 
   <div class="search-box">
     <div class="search-row">
-      <input type="text" id="searchInput" class="search-input" placeholder="🔍 輸入您的 9 碼購票中獎序號 (例如 131171760)..." autofocus>
-      <select id="priceFilter" class="filter-select">
+      <input type="search" id="searchInput" class="search-input" inputmode="numeric" enterkeyhint="search" autocomplete="off" maxlength="9" aria-label="中獎序號" placeholder="輸入 9 碼中獎序號，例如 131171760">
+      <select id="priceFilter" class="filter-select" aria-label="票價區間">
         <option value="">全部票價區間</option>
         <option value="7800">7800 區</option>
         <option value="5800">5800 區</option>
@@ -77,7 +128,7 @@
         <option value="3800">3800 區</option>
         <option value="2800">2800 區</option>
       </select>
-      <select id="benefitFilter" class="filter-select">
+      <select id="benefitFilter" class="filter-select" aria-label="福利項目">
         <option value="">全部福利項目</option>
         <option value="親筆簽名海報">親筆簽名海報</option>
         <option value="親筆簽名拍立得">親筆簽名拍立得</option>
@@ -88,7 +139,7 @@
         <option value="6:15 團體合照">6:15 團體合照</option>
       </select>
     </div>
-    <div class="result-count" id="resultCount">共顯示 2,725 筆中獎資料</div>
+    <div class="result-count" id="resultCount" aria-live="polite">共 2,725 筆中獎資料</div>
   </div>
 
   <div class="table-card">
@@ -108,6 +159,7 @@
         <tbody id="tableBody"></tbody>
       </table>
     </div>
+    <div class="more-wrap" id="moreWrap" hidden><button type="button" class="more-btn" id="moreBtn"></button></div>
   </div>
 </div>
 
@@ -119,61 +171,83 @@ const priceFilter = document.getElementById('priceFilter');
 const benefitFilter = document.getElementById('benefitFilter');
 const tableBody = document.getElementById('tableBody');
 const resultCount = document.getElementById('resultCount');
+const moreWrap = document.getElementById('moreWrap');
+const moreBtn = document.getElementById('moreBtn');
+const mq = window.matchMedia('(max-width: 700px)');
 
-function renderTable(list) {
+let current = [];
+let shown = 0;
+
+function rowHtml(item) {
+  const t = ['7800', '5800', '4800', '3800'].find(p => item.price.includes(p)) || '2800';
+  return `
+    <tr class="tier-${t}">
+      <td class="c-serial"><span class="serial-badge">${item.serial}</span></td>
+      <td class="c-price"><span class="tag tag-${t}">${item.price}</span></td>
+      <td class="c-benefit"><strong>${item.benefit_zh}</strong></td>
+      <td class="c-en">${item.benefit_en}</td>
+      <td class="c-page" data-label="該福利第幾張"><span><span class="page-badge">${item.page}</span> / ${item.total_pages}</span></td>
+      <td class="c-img" data-label="圖片順序"><strong>${item.img_idx}</strong></td>
+      <td class="c-pos" data-label="位置">${item.pos} (${item.pos_detail})</td>
+    </tr>`;
+}
+
+function updateCount() {
+  const total = current.length.toLocaleString();
+  resultCount.textContent = shown < current.length
+    ? `共 ${total} 筆，已顯示 ${shown} 筆`
+    : `共 ${total} 筆`;
+}
+
+function appendMore() {
+  const next = current.slice(shown, shown + (mq.matches ? 30 : 200));
+  tableBody.insertAdjacentHTML('beforeend', next.map(rowHtml).join(''));
+  shown += next.length;
+  moreBtn.textContent = `顯示更多（還有 ${(current.length - shown).toLocaleString()} 筆）`;
+  moreWrap.hidden = shown >= current.length;
+  updateCount();
+}
+
+function renderTable(list, filtersOn) {
+  current = list;
+  shown = 0;
+  tableBody.innerHTML = '';
   if (list.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="7" class="empty-state">查無符合條件的中獎序號，請檢查序號是否正確</td></tr>';
-    resultCount.textContent = '共顯示 0 筆資料';
+    const msg = filtersOn
+      ? '在目前的篩選條件下查無資料，可將票價／福利改回「全部」再試一次'
+      : '查無此序號，請確認 9 碼是否輸入正確';
+    tableBody.innerHTML = `<tr class="empty"><td colspan="7" class="empty-state">${msg}</td></tr>`;
+    moreWrap.hidden = true;
+    resultCount.textContent = '共 0 筆';
     return;
   }
-  
-  resultCount.textContent = `共顯示 ${list.length} 筆資料`;
-  
-  const displayList = list.slice(0, 500);
-  const rows = displayList.map(item => {
-    const pTag = item.price.includes('7800') ? 'tag-7800' :
-                 item.price.includes('5800') ? 'tag-5800' :
-                 item.price.includes('4800') ? 'tag-4800' :
-                 item.price.includes('3800') ? 'tag-3800' : 'tag-2800';
-    return `
-      <tr>
-        <td><span class="serial-badge">${item.serial}</span></td>
-        <td><span class="tag ${pTag}">${item.price}</span></td>
-        <td><strong>${item.benefit_zh}</strong></td>
-        <td>${item.benefit_en}</td>
-        <td><span class="page-badge">${item.page}</span> / ${item.total_pages}</td>
-        <td><strong>${item.img_idx}</strong></td>
-        <td>${item.pos} (${item.pos_detail})</td>
-      </tr>
-    `;
-  }).join('');
-  
-  tableBody.innerHTML = rows;
-  if (list.length > 500) {
-    tableBody.innerHTML += `<tr><td colspan="7" style="text-align:center; padding:12px; color:#57606f;">(僅預覽前 500 筆，請在搜尋框輸入具體序號以精確篩選)</td></tr>`;
-  }
+  appendMore();
 }
 
 function filterData() {
-  const query = searchInput.value.trim();
+  const query = searchInput.value.replace(/\D/g, '');
   const price = priceFilter.value;
   const benefit = benefitFilter.value;
-  
+
   const filtered = rawData.filter(item => {
     const matchQuery = !query || item.serial.includes(query);
     const matchPrice = !price || item.price.includes(price);
     const matchBenefit = !benefit || item.benefit_zh.includes(benefit);
     return matchQuery && matchPrice && matchBenefit;
   });
-  
-  renderTable(filtered);
+
+  renderTable(filtered, !!(price || benefit));
 }
 
 searchInput.addEventListener('input', filterData);
+searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') searchInput.blur(); });
 priceFilter.addEventListener('change', filterData);
 benefitFilter.addEventListener('change', filterData);
+moreBtn.addEventListener('click', appendMore);
 
-renderTable(rawData);
+filterData();
+// 只在桌機自動聚焦；手機自動聚焦會一進頁面就跳出鍵盤、遮住內容
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) searchInput.focus();
 </script>
 </body>
 </html>
